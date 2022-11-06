@@ -66,3 +66,6 @@ def changepass(request):
     
 # userchange form
 #  view for this 
+
+def userchangeform(request):
+    
