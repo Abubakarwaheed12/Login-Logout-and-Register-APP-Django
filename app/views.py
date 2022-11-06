@@ -65,3 +65,4 @@ def changepass(request):
         return HttpResponseRedirect('loginsimply')
     
 # userchange form
+#  view for this 
