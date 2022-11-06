@@ -63,3 +63,5 @@ def changepass(request):
         return render(request , 'changepass.html' , {'form':fm})
     else:
         return HttpResponseRedirect('loginsimply')
+    
+# userchange form
