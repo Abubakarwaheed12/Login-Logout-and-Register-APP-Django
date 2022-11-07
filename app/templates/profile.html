@@ -5,10 +5,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>profile</title>
+    <style>
+        .user{
+            color: green;
+            font-size: 18px;
+            padding: 10px;
+            border-right: 2px solid red;
+            margin-bottom: 40px;
+        }
+        section{
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
     <center>
     <h1> Welcome {{name}}  to the user profile </h1>
+
+    <section>
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                {% for error in non_field_errors %}
+                {{error}}
+                {% endfor %}
+            {% endif %}
+            
+
+            {% for fm in form %}
+                {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
+            {% endfor %}
+
+            <input type="submit" value="submit">
+        </form>
+
+        {% if messages %}
+            {% for message in messages %}
+                {{message}}
+            {% endfor%}
+        {% endif %}
+    </section>
+
+    <section>
+        
+
+        {% if users %}
+        <h2>users</h2>   
+        {% for user in users %} 
+        <a href="{% url 'userdetails' user.id %}">
+        <span class="user">{{user}}</span>
+        </a>
+        {% endfor %}
+             {% endif %}
+            
+    </section>
     <a href="{% url 'logout_user' %}">logout user</a> <br><br>
     <a href="{% url 'changepass' %}">change password</a>
 </center>

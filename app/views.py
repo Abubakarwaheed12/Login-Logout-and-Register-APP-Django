@@ -2,7 +2,8 @@ from django.shortcuts import render , HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm , PasswordChangeForm
 from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
-from .forms import sign_up
+from .forms import sign_up , editprofileform , editadminprofileform
+from django.contrib.auth.models import User
 # Create your views here.
 
 # signup view funtion 
@@ -40,7 +41,24 @@ def signin(request):
 # profile 
 def user_profile(request):
     if request.user.is_authenticated:
-        return render(request , 'profile.html' , {"name":request.user})
+        if request.method=='POST':
+            if request.user.is_superuser==True:
+                fm=editadminprofileform(request.POST, instance=request.user)
+                users=User.objects.all()
+            else:
+                users=None
+                fm=editprofileform(request.POST, instance=request.user)
+            if fm.is_valid():
+                fm.save()
+                messages.success(request , "Profile upodated succesfully")
+        else:
+            if request.user.is_superuser==True:
+                users=User.objects.all()
+                fm=editadminprofileform(instance=request.user)
+            else:
+                users=None
+                fm=editprofileform(instance=request.user)
+        return render(request , 'profile.html' , {"name":request.user , "form":fm , 'users':users})
     else:
         return HttpResponseRedirect('/loginsimply/')
 
@@ -48,7 +66,7 @@ def user_profile(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect('/loginsimply/')
+    return HttpResponseRedirect('/')
 
 # changepassword 
 def changepass(request):
@@ -64,8 +82,14 @@ def changepass(request):
     else:
         return HttpResponseRedirect('loginsimply')
     
-# userchange form
-#  view for this 
+# specific user details 
 
-def userchangeform(request):
-    
+def userdetails(request , id):
+    if User.is_authenticated:
+        pi=User.objects.get(pk=id)
+        fm=editadminprofileform(instance=pi)
+        return render(request, 'userdetails.html' , {'form':fm})
+    else:
+        return HttpResponseRedirect('/loginsimply/')
+        
+        
