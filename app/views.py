@@ -92,4 +92,6 @@ def userdetails(request , id):
     else:
         return HttpResponseRedirect('/loginsimply/')
         
-        
+#User admin profile 
+
+   
