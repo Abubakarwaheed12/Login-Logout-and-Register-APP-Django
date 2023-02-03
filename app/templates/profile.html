@@ -61,6 +61,15 @@
     </section>
     <a href="{% url 'logout_user' %}">logout user</a> <br><br>
     <a href="{% url 'changepass' %}">change password</a>
+
+    <section>
+        <h2>  permissions </h2>
+        {% if perms.app_blog.delete %}
+        <input type="submit" value="delete">
+        {% else %}
+        <p>you have no permision</p>
+        {% endif%}
+    </section>
 </center>
 </body>
 </html>

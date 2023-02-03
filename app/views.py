@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm , PasswordChangeForm
 from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
 from .forms import sign_up , editprofileform , editadminprofileform
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User , Group
 # Create your views here.
 
 # signup view funtion 
@@ -12,8 +12,10 @@ def signup(request):
         fm=sign_up(request.POST)
         if fm.is_valid():
             fm.save()
+            # group=Group.objects.get(name='editor')
+            # user.Groups.add(group)
             messages.success(request, 'Your account has been created successfully')
-    
+   
     else:
         fm=sign_up()
     return render(request , 'signup.html' , {'form':fm})
